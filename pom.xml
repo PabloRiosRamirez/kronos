@@ -12,11 +12,11 @@
     </parent>
 
     <groupId>online.grisk</groupId>
-    <artifactId>zeus</artifactId>
+    <artifactId>kronos</artifactId>
     <version>0.0.1.alpha</version>
     <packaging>jar</packaging>
 
-    <name>Zeus - Eureka Server</name>
+    <name>Kronos - Eureka Server</name>
     <description>Eureka Server - GRisk Project</description>
 
     <properties>
