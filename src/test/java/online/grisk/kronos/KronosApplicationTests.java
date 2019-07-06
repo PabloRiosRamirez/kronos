@@ -1,4 +1,4 @@
-package online.grisk.zeus;
+package online.grisk.kronos;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
