@@ -6,8 +6,11 @@ logging:
     org:
       springframework:
         web: trace
-  cloud:
-    config:
-      uri:  ${SPRING_CLOUD_CONFIG_URI}
-      label:  ${SPRING_CLOUD_CONFIG_LABEL}
-      profile:  ${SPRING_CLOUD_CONFIG_PROFILE}
+eureka:
+  instance:
+    hostname: kronos-qa.herokuapp.com
+  client:
+    service-url:
+      defaultZone: https://${eureka.instance.hostname}/eureka/
+    healthcheck:
+      enabled: true
