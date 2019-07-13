@@ -10,6 +10,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 
+import javax.ws.rs.HttpMethod;
+
 @Configuration
 @EnableWebSecurity
 @Order(1)
@@ -28,10 +30,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
+                .sessionCreationPolicy(SessionCreationPolicy.NEVER)
                 .and().requestMatchers().antMatchers("/eureka/**")
-                .and().authorizeRequests().antMatchers("/eureka/**")
-                .hasRole("SYSTEM").anyRequest().denyAll().and()
-                .httpBasic().and().csrf().disable();
+                .and().authorizeRequests()
+                .antMatchers("/eureka/**").authenticated()
+                .antMatchers(HttpMethod.GET, "/").authenticated()
+                .antMatchers("/info", "/health").authenticated()
+                .anyRequest().denyAll()
+                .and().httpBasic()
+                .and().csrf().disable();
     }
 }
