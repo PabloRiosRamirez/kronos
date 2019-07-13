@@ -1,6 +1,11 @@
 spring:
   application:
     name: kronos
+logging:
+  level:
+    org:
+      springframework:
+        web: trace
   cloud:
     config:
       uri:  ${SPRING_CLOUD_CONFIG_URI}
