@@ -10,28 +10,28 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 
-@Configuration
-@EnableWebSecurity
-@Order(1)
-public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+import javax.ws.rs.HttpMethod;
 
-    @Value("${SECRET_USER}")
+@Configuration
+public class AdminSecurityConfiguration extends WebSecurityConfigurerAdapter {
+
+    @Value("${ADMIN_USER}")
     String user;
-    @Value("${SECRET_PASS}")
+    @Value("${ADMIN_PASS}")
     String pass;
 
     @Autowired
-    protected void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication().withUser(user).password("{noop}".concat(pass)).roles("SYSTEM");
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.inMemoryAuthentication().withUser(user).password("{noop}".concat(pass)).roles("ADMIN");
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
-                .and().requestMatchers().antMatchers("/eureka/**")
-                .and().authorizeRequests().antMatchers("/eureka/**")
-                .hasRole("SYSTEM").anyRequest().denyAll().and()
-                .httpBasic().and().csrf().disable();
+        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.NEVER)
+                .and().httpBasic().disable().authorizeRequests()
+                .antMatchers(HttpMethod.GET, "/").hasRole("ADMIN")
+                .antMatchers("/info", "/health").authenticated().anyRequest()
+                .denyAll().and().csrf().disable();
     }
+
 }
